@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>總務室系統入口</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a4f8a;
+    --primary-dark: #0f3260;
+    --primary-light: #2d6ab4;
+    --accent: #4a9fd4;
+    --accent-light: #e8f4fb;
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --text: #1a2d40;
+    --text-sub: #5a7a96;
+    --shadow: 0 4px 20px rgba(26, 79, 138, 0.12);
+    --shadow-hover: 0 8px 32px rgba(26, 79, 138, 0.22);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text);
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(15,50,96,0.35);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 24px;
+  }
+  .header-logo {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .header-text p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+  }
+
+  .greeting {
+    background: var(--primary);
+    padding: 13px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .greeting-text { color: #fff; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; }
+  .greeting-date  { color: rgba(255,255,255,0.75); font-size: 12px; }
+
+  main {
+    padding: 20px 16px 32px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sub);
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 14px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    border: 1.5px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent-light), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.18s;
+    border-radius: var(--radius);
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: rgba(74,159,212,0.35); }
+  .card:hover::after { opacity: 1; }
+  .card:active { transform: scale(0.97); }
+
+  .card-disabled {
+    background: #f5f6f8;
+    border-radius: var(--radius);
+    box-shadow: none;
+    border: 1.5px dashed #c8d6e5;
+    padding: 22px 14px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.7;
+  }
+
+  .card-icon {
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    position: relative; z-index: 1;
+  }
+  .card-name {
+    font-size: 15px; font-weight: 700;
+    text-align: center; line-height: 1.3;
+    color: var(--text);
+    position: relative; z-index: 1;
+  }
+  .card-disabled .card-name { color: #8a9aaa; }
+  .card-desc {
+    font-size: 11px; color: var(--text-sub);
+    text-align: center; line-height: 1.4;
+    position: relative; z-index: 1;
+  }
+
+  .ic-blue   { background: #ddeeff; }
+  .ic-green  { background: #dff5ec; }
+  .ic-orange { background: #fff0e0; }
+  .ic-purple { background: #f0e8ff; }
+  .ic-red    { background: #ffe8ea; }
+  .ic-teal   { background: #e0f5f5; }
+  .ic-yellow { background: #fffbe0; }
+  .ic-pink   { background: #fce8f3; }
+  .ic-gray   { background: #eaeef2; }
+
+  .badge {
+    position: absolute; top: 11px; right: 11px;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    z-index: 2; letter-spacing: 0.5px;
+  }
+  .badge-dev { background: #fff3cd; color: #856404; }
+
+  footer {
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 11px;
+    padding: 0 16px 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-logo">🏥</div>
+    <div class="header-text">
+      <h1>花蓮慈濟醫院</h1>
+      <p>總務室 · 內部系統入口</p>
+    </div>
+  </div>
+  <div class="greeting">
+    <span class="greeting-text" id="greeting">歡迎使用總務室系統</span>
+    <span class="greeting-date" id="dateStr"></span>
+  </div>
+</header>
+
+<main>
+  <p class="section-title">系統選單</p>
+
+  <div class="grid">
+
+    <!-- ✅ 毒化物管理 -->
+    <a class="card" href="https://andyan0830.github.io/chemical-mgmt/" target="_blank">
+      <div class="card-icon ic-red">☣️</div>
+      <div class="card-name">毒化物管理</div>
+      <div class="card-desc">化學品清冊<br>申報/緊急聯絡</div>
+    </a>
+
+    <!-- ✅ 會議室排程 -->
+    <a class="card" href="https://andyan0830.github.io/Hualien-Tzu-Chi-Hospital-Conference-Room-Management-System/" target="_blank">
+      <div class="card-icon ic-blue">📅</div>
+      <div class="card-name">會議室排程</div>
+      <div class="card-desc">場地預約/查詢<br>鑰匙借用</div>
+    </a>
+
+    <!-- ✅ 環境巡檢系統 -->
+    <a class="card" href="https://andyan0830.github.io/hospital-inspection-system/" target="_blank">
+      <div class="card-icon ic-teal">🌿</div>
+      <div class="card-name">環境巡檢系統</div>
+      <div class="card-desc">院區環境<br>定期巡查</div>
+    </a>
+
+    <!-- ✅ 廁所巡檢 -->
+    <a class="card" href="https://andyan0830.github.io/toilet-inspection-app/" target="_blank">
+      <div class="card-icon ic-green">🚻</div>
+      <div class="card-name">廁所巡檢</div>
+      <div class="card-desc">定期巡查<br>紀錄表單</div>
+    </a>
+
+    <!-- ✅ 公文判文系統 -->
+    <a class="card" href="https://huggingface.co/spaces/Andy0830/Document-recognition-system" target="_blank">
+      <div class="card-icon ic-yellow">📄</div>
+      <div class="card-name">公文判文系統</div>
+      <div class="card-desc">公文辨識<br>AI 輔助判讀</div>
+    </a>
+
+    <!-- ✅ 制服管理系統 -->
+    <a class="card" href="https://www.appsheet.com/newshortcut/be28c764-78c0-468b-81a7-35356ad744fa" target="_blank">
+      <div class="card-icon ic-purple">👔</div>
+      <div class="card-name">制服管理系統</div>
+      <div class="card-desc">制服申請<br>庫存管理</div>
+    </a>
+
+    <!-- ✅ 合約書管理系統 -->
+    <a class="card" href="https://andyan0830.github.io/contract-manager/" target="_blank">
+      <div class="card-icon ic-orange">📋</div>
+      <div class="card-name">合約書管理</div>
+      <div class="card-desc">合約書建檔<br>到期提醒</div>
+    </a>
+
+    <!-- ⏳ 物品借用（開發中） -->
+    <div class="card-disabled">
+      <span class="badge badge-dev">開發中</span>
+      <div class="card-icon ic-gray">📦</div>
+      <div class="card-name">物品借用</div>
+      <div class="card-desc">設備/茶具<br>借還管理</div>
+    </div>
+
+    <!-- ⏳ AV 故障排除（開發中） -->
+    <div class="card-disabled">
+      <span class="badge badge-dev">開發中</span>
+      <div class="card-icon ic-gray">📺</div>
+      <div class="card-name">AV 故障排除</div>
+      <div class="card-desc">會議室設備<br>問題速查</div>
+    </div>
+
+    <!--
+      ★ 之後新增系統，複製下方範本貼在這裡：
+
+      <a class="card" href="你的網址" target="_blank">
+        <div class="card-icon ic-blue">圖示emoji</div>
+        <div class="card-name">系統名稱</div>
+        <div class="card-desc">說明文字<br>第二行</div>
+      </a>
+
+      圖示背景色可選：ic-blue / ic-green / ic-orange / ic-purple / ic-red / ic-teal / ic-yellow / ic-pink
+    -->
+
+  </div>
+</main>
+
+<footer>花蓮慈濟醫院 總務室 · 內部使用</footer>
+
+<script>
+  const h = new Date().getHours();
+  const g = h < 12 ? '早安' : h < 18 ? '午安' : '晚安';
+  document.getElementById('greeting').textContent = g + '，歡迎使用總務室系統';
+
+  const now = new Date();
+  const days = ['日','一','二','三','四','五','六'];
+  document.getElementById('dateStr').textContent =
+    `${now.getMonth()+1}/${now.getDate()} 週${days[now.getDay()]}`;
+</script>
+
+</body>
+</html>
